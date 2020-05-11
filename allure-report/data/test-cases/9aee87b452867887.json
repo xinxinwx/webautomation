@@ -1,0 +1,189 @@
+{
+  "uid" : "9aee87b452867887",
+  "name" : "test_login_0_user_wrongForamt[data0]",
+  "fullName" : "TestCases.test_login_error.TestLoginError#test_login_0_user_wrongForamt",
+  "historyId" : "bad4009c532994768ce93e8f8a4a890c",
+  "time" : {
+    "start" : 1574698013081,
+    "stop" : 1574698013515,
+    "duration" : 434
+  },
+  "status" : "passed",
+  "flaky" : true,
+  "beforeStages" : [ {
+    "name" : "refresh_page",
+    "time" : {
+      "start" : 1574698013080,
+      "stop" : 1574698013081,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "access_web",
+    "time" : {
+      "start" : 1574698007787,
+      "stop" : 1574698013080,
+      "duration" : 5293
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "73f4d387bc397b1d",
+      "name" : "log",
+      "source" : "73f4d387bc397b1d.txt",
+      "type" : "text/plain",
+      "size" : 9541
+    } ],
+    "parameters" : [ ],
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "refresh_page::0",
+    "time" : {
+      "start" : 1574698013517,
+      "stop" : 1574698013527,
+      "duration" : 10
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "access_web::0",
+    "time" : {
+      "start" : 1574698016311,
+      "stop" : 1574698018611,
+      "duration" : 2300
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "TestCases"
+  }, {
+    "name" : "suite",
+    "value" : "test_login_error"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestLoginError"
+  }, {
+    "name" : "host",
+    "value" : "DESKTOP-SILG5DT"
+  }, {
+    "name" : "thread",
+    "value" : "4236-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "TestCases.test_login_error"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "data",
+    "value" : "{'user': '186847205534', 'passwd': 'python', 'check': '请输入正确的手机号'}"
+  } ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ {
+      "uid" : "2d0d49138ddd96ca",
+      "status" : "broken",
+      "statusDetails" : "selenium.common.exceptions.TimeoutException: Message:",
+      "time" : {
+        "start" : 1574697771335,
+        "stop" : 1574697802130,
+        "duration" : 30795
+      }
+    }, {
+      "uid" : "1df177e0ed49d1b",
+      "status" : "passed",
+      "time" : {
+        "start" : 1574697340709,
+        "stop" : 1574697341150,
+        "duration" : 441
+      }
+    }, {
+      "uid" : "b0e9d44c77405e20",
+      "status" : "passed",
+      "time" : {
+        "start" : 1574697128512,
+        "stop" : 1574697128966,
+        "duration" : 454
+      }
+    } ],
+    "categories" : [ ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 1,
+        "skipped" : 0,
+        "passed" : 2,
+        "unknown" : 0,
+        "total" : 3
+      },
+      "items" : [ {
+        "uid" : "8daabf62f8407ca8",
+        "reportUrl" : "http://localhost:8080/job/%E5%89%8D%E7%A8%8B%E8%B4%B7/32/allure/#testresult/8daabf62f8407ca8",
+        "status" : "broken",
+        "statusDetails" : "selenium.common.exceptions.TimeoutException: Message:",
+        "time" : {
+          "start" : 1574697771335,
+          "stop" : 1574697802130,
+          "duration" : 30795
+        }
+      }, {
+        "uid" : "eab982f0680df64e",
+        "reportUrl" : "http://localhost:8080/job/%E5%89%8D%E7%A8%8B%E8%B4%B7/31/allure/#testresult/eab982f0680df64e",
+        "status" : "passed",
+        "time" : {
+          "start" : 1574697340709,
+          "stop" : 1574697341150,
+          "duration" : 441
+        }
+      } ]
+    },
+    "tags" : [ ]
+  },
+  "source" : "9aee87b452867887.json",
+  "parameterValues" : [ "{'user': '186847205534', 'passwd': 'python', 'check': '请输入正确的手机号'}" ]
+}

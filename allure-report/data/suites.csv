@@ -1,0 +1,6 @@
+"Status","Name","Duration in ms","Description"
+"passed","TestCases.test_login_error.TestLoginError#test_login_0_user_wrongForamt","411",""
+"passed","TestCases.test_login_error.TestLoginError#test_login_0_user_wrongForamt","434",""
+"passed","TestCases.test_login.TestLogin#test_login_1_success","22009",""
+"passed","TestCases.test_login_error.TestLoginError#test_login_0_user_wrongForamt","419",""
+"passed","TestCases.test_login_error.TestLoginError#test_login_0_user_wrongForamt","926",""

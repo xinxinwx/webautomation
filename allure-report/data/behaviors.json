@@ -1,0 +1,65 @@
+{
+  "uid" : "b1a8273437954620fa374b796ffaacdd",
+  "name" : "behaviors",
+  "children" : [ {
+    "name" : "test_login_1_success",
+    "uid" : "6a92284b775c087",
+    "parentUid" : "b1a8273437954620fa374b796ffaacdd",
+    "status" : "passed",
+    "time" : {
+      "start" : 1574697962052,
+      "stop" : 1574697984061,
+      "duration" : 22009
+    },
+    "flaky" : false,
+    "parameters" : [ ]
+  }, {
+    "name" : "test_login_0_user_wrongForamt[data0]",
+    "uid" : "9aee87b452867887",
+    "parentUid" : "b1a8273437954620fa374b796ffaacdd",
+    "status" : "passed",
+    "time" : {
+      "start" : 1574698013081,
+      "stop" : 1574698013515,
+      "duration" : 434
+    },
+    "flaky" : true,
+    "parameters" : [ "{'user': '186847205534', 'passwd': 'python', 'check': '请输入正确的手机号'}" ]
+  }, {
+    "name" : "test_login_0_user_wrongForamt[data1]",
+    "uid" : "e66f5c3f5290d108",
+    "parentUid" : "b1a8273437954620fa374b796ffaacdd",
+    "status" : "passed",
+    "time" : {
+      "start" : 1574698013532,
+      "stop" : 1574698014458,
+      "duration" : 926
+    },
+    "flaky" : false,
+    "parameters" : [ "{'user': '1868472055', 'passwd': 'python', 'check': '请输入正确的手机号'}" ]
+  }, {
+    "name" : "test_login_0_user_wrongForamt[data2]",
+    "uid" : "b6b709761af9ff10",
+    "parentUid" : "b1a8273437954620fa374b796ffaacdd",
+    "status" : "passed",
+    "time" : {
+      "start" : 1574698014824,
+      "stop" : 1574698015235,
+      "duration" : 411
+    },
+    "flaky" : false,
+    "parameters" : [ "{'user': '', 'passwd': 'python', 'check': '请输入手机号'}" ]
+  }, {
+    "name" : "test_login_0_user_wrongForamt[data3]",
+    "uid" : "b7ea3611c8c056da",
+    "parentUid" : "b1a8273437954620fa374b796ffaacdd",
+    "status" : "passed",
+    "time" : {
+      "start" : 1574698015542,
+      "stop" : 1574698015961,
+      "duration" : 419
+    },
+    "flaky" : true,
+    "parameters" : [ "{'user': '1163563232', 'passwd': 'python', 'check': '请输入正确的手机号'}" ]
+  } ]
+}

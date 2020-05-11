@@ -1,0 +1,189 @@
+{
+  "uid" : "b7ea3611c8c056da",
+  "name" : "test_login_0_user_wrongForamt[data3]",
+  "fullName" : "TestCases.test_login_error.TestLoginError#test_login_0_user_wrongForamt",
+  "historyId" : "0b5d9948635b7f49de97c51c2f68ded0",
+  "time" : {
+    "start" : 1574698015542,
+    "stop" : 1574698015961,
+    "duration" : 419
+  },
+  "status" : "passed",
+  "flaky" : true,
+  "beforeStages" : [ {
+    "name" : "refresh_page",
+    "time" : {
+      "start" : 1574698015541,
+      "stop" : 1574698015541,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "access_web",
+    "time" : {
+      "start" : 1574698007787,
+      "stop" : 1574698013080,
+      "duration" : 5293
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "333fb9ccb1328bc",
+      "name" : "log",
+      "source" : "333fb9ccb1328bc.txt",
+      "type" : "text/plain",
+      "size" : 8735
+    } ],
+    "parameters" : [ ],
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "refresh_page::0",
+    "time" : {
+      "start" : 1574698015963,
+      "stop" : 1574698016309,
+      "duration" : 346
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "access_web::0",
+    "time" : {
+      "start" : 1574698016311,
+      "stop" : 1574698018611,
+      "duration" : 2300
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "TestCases"
+  }, {
+    "name" : "suite",
+    "value" : "test_login_error"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestLoginError"
+  }, {
+    "name" : "host",
+    "value" : "DESKTOP-SILG5DT"
+  }, {
+    "name" : "thread",
+    "value" : "4236-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "TestCases.test_login_error"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "data",
+    "value" : "{'user': '1163563232', 'passwd': 'python', 'check': '请输入正确的手机号'}"
+  } ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ {
+      "uid" : "296b9598bea86e9c",
+      "status" : "broken",
+      "statusDetails" : "KeyError: 'passwd'",
+      "time" : {
+        "start" : 1574697804243,
+        "stop" : 1574697804244,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "9ba605e70cd95749",
+      "status" : "passed",
+      "time" : {
+        "start" : 1574697342987,
+        "stop" : 1574697343404,
+        "duration" : 417
+      }
+    }, {
+      "uid" : "c6d01fa63bfe5885",
+      "status" : "passed",
+      "time" : {
+        "start" : 1574697130841,
+        "stop" : 1574697131260,
+        "duration" : 419
+      }
+    } ],
+    "categories" : [ ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 1,
+        "skipped" : 0,
+        "passed" : 2,
+        "unknown" : 0,
+        "total" : 3
+      },
+      "items" : [ {
+        "uid" : "5e8bd458da4731e0",
+        "reportUrl" : "http://localhost:8080/job/%E5%89%8D%E7%A8%8B%E8%B4%B7/32/allure/#testresult/5e8bd458da4731e0",
+        "status" : "broken",
+        "statusDetails" : "KeyError: 'passwd'",
+        "time" : {
+          "start" : 1574697804243,
+          "stop" : 1574697804244,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "cc379a2375133ce8",
+        "reportUrl" : "http://localhost:8080/job/%E5%89%8D%E7%A8%8B%E8%B4%B7/31/allure/#testresult/cc379a2375133ce8",
+        "status" : "passed",
+        "time" : {
+          "start" : 1574697342987,
+          "stop" : 1574697343404,
+          "duration" : 417
+        }
+      } ]
+    },
+    "tags" : [ ]
+  },
+  "source" : "b7ea3611c8c056da.json",
+  "parameterValues" : [ "{'user': '1163563232', 'passwd': 'python', 'check': '请输入正确的手机号'}" ]
+}

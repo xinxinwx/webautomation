@@ -1,0 +1,4 @@
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/refresh {"sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 DELETE http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994 {"sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request

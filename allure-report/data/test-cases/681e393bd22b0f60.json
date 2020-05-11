@@ -1,0 +1,132 @@
+{
+  "uid" : "681e393bd22b0f60",
+  "name" : "test_login_0_user_wrongForamt[data2]",
+  "fullName" : "TestCases.test_login_error.TestLoginError#test_login_0_user_wrongForamt",
+  "historyId" : "676f5d1dad1d348ba42483c7b998382b",
+  "time" : {
+    "start" : 1574697803588,
+    "stop" : 1574697803943,
+    "duration" : 355
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "beforeStages" : [ {
+    "name" : "refresh_page",
+    "time" : {
+      "start" : 1574697803587,
+      "stop" : 1574697803587,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "access_web",
+    "time" : {
+      "start" : 1574697766445,
+      "stop" : 1574697771334,
+      "duration" : 4889
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "3037f22737b470db",
+      "name" : "log",
+      "source" : "3037f22737b470db.txt",
+      "type" : "text/plain",
+      "size" : 8369
+    } ],
+    "parameters" : [ ],
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "refresh_page::0",
+    "time" : {
+      "start" : 1574697803945,
+      "stop" : 1574697804238,
+      "duration" : 293
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "access_web::0",
+    "time" : {
+      "start" : 1574697804555,
+      "stop" : 1574697806734,
+      "duration" : 2179
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "TestCases"
+  }, {
+    "name" : "suite",
+    "value" : "test_login_error"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestLoginError"
+  }, {
+    "name" : "host",
+    "value" : "DESKTOP-SILG5DT"
+  }, {
+    "name" : "thread",
+    "value" : "2784-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "TestCases.test_login_error"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "data",
+    "value" : "{'user': '', 'passwd': '66666', 'check': '请输入手机号'}"
+  } ],
+  "links" : [ ],
+  "hidden" : true,
+  "retry" : true,
+  "extra" : {
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "681e393bd22b0f60.json",
+  "parameterValues" : [ "{'user': '', 'passwd': '66666', 'check': '请输入手机号'}" ]
+}

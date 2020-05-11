@@ -1,0 +1,136 @@
+{
+  "uid" : "296b9598bea86e9c",
+  "name" : "test_login_0_user_wrongForamt[data3]",
+  "fullName" : "TestCases.test_login_error.TestLoginError#test_login_0_user_wrongForamt",
+  "historyId" : "0b5d9948635b7f49de97c51c2f68ded0",
+  "time" : {
+    "start" : 1574697804243,
+    "stop" : 1574697804244,
+    "duration" : 1
+  },
+  "status" : "broken",
+  "statusMessage" : "KeyError: 'passwd'",
+  "statusTrace" : "self = <TestCases.test_login_error.TestLoginError object at 0x000001BD87148390>\ndata = {'5454': 'python', 'check': '请输入正确的手机号', 'user': '1163563232'}\naccess_web = (<selenium.webdriver.chrome.webdriver.WebDriver (session=\"1679a1911c7d9949ee9e6b020640e994\")>, <PageObejects.login_page.LoginPage object at 0x000001BD871228D0>)\n\n    @pytest.mark.parametrize('data', LD.phone_data)\n    # 异常用例手机号格式不正确(大于11位 小于11位 为空  不在这个号码段)\n    def test_login_0_user_wrongForamt(self, data, access_web):\n>       access_web[1].login(data['user'], data['passwd'])\nE       KeyError: 'passwd'\n\nTestCases\\test_login_error.py:12: KeyError",
+  "flaky" : false,
+  "beforeStages" : [ {
+    "name" : "refresh_page",
+    "time" : {
+      "start" : 1574697804243,
+      "stop" : 1574697804243,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "access_web",
+    "time" : {
+      "start" : 1574697766445,
+      "stop" : 1574697771334,
+      "duration" : 4889
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "status" : "broken",
+    "statusMessage" : "KeyError: 'passwd'",
+    "statusTrace" : "self = <TestCases.test_login_error.TestLoginError object at 0x000001BD87148390>\ndata = {'5454': 'python', 'check': '请输入正确的手机号', 'user': '1163563232'}\naccess_web = (<selenium.webdriver.chrome.webdriver.WebDriver (session=\"1679a1911c7d9949ee9e6b020640e994\")>, <PageObejects.login_page.LoginPage object at 0x000001BD871228D0>)\n\n    @pytest.mark.parametrize('data', LD.phone_data)\n    # 异常用例手机号格式不正确(大于11位 小于11位 为空  不在这个号码段)\n    def test_login_0_user_wrongForamt(self, data, access_web):\n>       access_web[1].login(data['user'], data['passwd'])\nE       KeyError: 'passwd'\n\nTestCases\\test_login_error.py:12: KeyError",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "45231f7f454c849f",
+      "name" : "log",
+      "source" : "45231f7f454c849f.txt",
+      "type" : "text/plain",
+      "size" : 591
+    } ],
+    "parameters" : [ ],
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : true,
+    "stepsCount" : 0,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "refresh_page::0",
+    "time" : {
+      "start" : 1574697804250,
+      "stop" : 1574697804553,
+      "duration" : 303
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  }, {
+    "name" : "access_web::0",
+    "time" : {
+      "start" : 1574697804555,
+      "stop" : 1574697806734,
+      "duration" : 2179
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "stepsCount" : 0,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "TestCases"
+  }, {
+    "name" : "suite",
+    "value" : "test_login_error"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestLoginError"
+  }, {
+    "name" : "host",
+    "value" : "DESKTOP-SILG5DT"
+  }, {
+    "name" : "thread",
+    "value" : "2784-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "TestCases.test_login_error"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "data",
+    "value" : "{'user': '1163563232', '5454': 'python', 'check': '请输入正确的手机号'}"
+  } ],
+  "links" : [ ],
+  "hidden" : true,
+  "retry" : true,
+  "extra" : {
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "296b9598bea86e9c.json",
+  "parameterValues" : [ "{'user': '1163563232', '5454': 'python', 'check': '请输入正确的手机号'}" ]
+}

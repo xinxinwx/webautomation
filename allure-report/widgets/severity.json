@@ -1,0 +1,51 @@
+[ {
+  "uid" : "9aee87b452867887",
+  "name" : "test_login_0_user_wrongForamt[data0]",
+  "time" : {
+    "start" : 1574698013081,
+    "stop" : 1574698013515,
+    "duration" : 434
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "b6b709761af9ff10",
+  "name" : "test_login_0_user_wrongForamt[data2]",
+  "time" : {
+    "start" : 1574698014824,
+    "stop" : 1574698015235,
+    "duration" : 411
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "b7ea3611c8c056da",
+  "name" : "test_login_0_user_wrongForamt[data3]",
+  "time" : {
+    "start" : 1574698015542,
+    "stop" : 1574698015961,
+    "duration" : 419
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "6a92284b775c087",
+  "name" : "test_login_1_success",
+  "time" : {
+    "start" : 1574697962052,
+    "stop" : 1574697984061,
+    "duration" : 22009
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "e66f5c3f5290d108",
+  "name" : "test_login_0_user_wrongForamt[data1]",
+  "time" : {
+    "start" : 1574698013532,
+    "stop" : 1574698014458,
+    "duration" : 926
+  },
+  "status" : "passed",
+  "severity" : "normal"
+} ]

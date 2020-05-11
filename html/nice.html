@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function find_all(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sort_column(elem) {
+    toggle_sort_states(elem);
+    var colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    var key;
+    if (elem.classList.contains('numeric')) {
+        key = key_num;
+    } else if (elem.classList.contains('result')) {
+        key = key_result;
+    } else {
+        key = key_alpha;
+    }
+    sort_table(elem, key(colIndex));
+}
+
+function show_all_extras() {
+    find_all('.col-result').forEach(show_extras);
+}
+
+function hide_all_extras() {
+    find_all('.col-result').forEach(hide_extras);
+}
+
+function show_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.remove("collapsed");
+    expandcollapse.classList.remove("expander");
+    expandcollapse.classList.add("collapser");
+}
+
+function hide_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.add("collapsed");
+    expandcollapse.classList.remove("collapser");
+    expandcollapse.classList.add("expander");
+}
+
+function show_filters() {
+    var filter_items = document.getElementsByClassName('filter');
+    for (var i = 0; i < filter_items.length; i++)
+        filter_items[i].hidden = false;
+}
+
+function add_collapse() {
+    // Add links for show/hide all
+    var resulttable = find('table#results-table');
+    var showhideall = document.createElement("p");
+    showhideall.innerHTML = '<a href="javascript:show_all_extras()">Show all details</a> / ' +
+                            '<a href="javascript:hide_all_extras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    find_all('.col-result').forEach(function(elem) {
+        var collapsed = get_query_parameter('collapsed') || 'Passed';
+        var extras = elem.parentNode.nextElementSibling;
+        var expandcollapse = document.createElement("span");
+        if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add("collapsed");
+            expandcollapse.classList.add("expander");
+        } else {
+            expandcollapse.classList.add("collapser");
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener("click", function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains("collapsed")) {
+                show_extras(event.currentTarget);
+            } else {
+                hide_extras(event.currentTarget);
+            }
+        });
+    })
+}
+
+function get_query_parameter(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () {
+    reset_sort_headers();
+
+    add_collapse();
+
+    show_filters();
+
+    sort_column(find('.initial-sort'));
+
+    find_all('.sortable').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  sort_column(elem);
+                              }, false)
+    });
+
+};
+
+function sort_table(clicked, key_func) {
+    var rows = find_all('.results-table-row');
+    var reversed = !clicked.classList.contains('asc');
+    var sorted_rows = sort(rows, key_func, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    var thead = document.getElementById("results-table-head");
+    document.getElementById('results-table').remove();
+    var parent = document.createElement("table");
+    parent.id = "results-table";
+    parent.appendChild(thead);
+    sorted_rows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName("BODY")[0].appendChild(parent);
+}
+
+function sort(items, key_func, reversed) {
+    var sort_array = items.map(function(item, i) {
+        return [key_func(item), i];
+    });
+
+    sort_array.sort(function(a, b) {
+        var key_a = a[0];
+        var key_b = b[0];
+
+        if (key_a == key_b) return 0;
+
+        if (reversed) {
+            return (key_a < key_b ? 1 : -1);
+        } else {
+            return (key_a > key_b ? 1 : -1);
+        }
+    });
+
+    return sort_array.map(function(item) {
+        var index = item[1];
+        return items[index];
+    });
+}
+
+function key_alpha(col_index) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[col_index].firstChild.data.toLowerCase();
+    };
+}
+
+function key_num(col_index) {
+    return function(elem) {
+        return parseFloat(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function key_result(col_index) {
+    return function(elem) {
+        var strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+                       'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function reset_sort_headers() {
+    find_all('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    find_all('.sortable').forEach(function(elem) {
+        var icon = document.createElement("div");
+        icon.className = "sort-icon";
+        icon.textContent = "vvv";
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove("desc", "active");
+        elem.classList.add("asc", "inactive");
+    });
+}
+
+function toggle_sort_states(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        reset_sort_headers();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function is_all_rows_hidden(value) {
+  return value.hidden == false;
+}
+
+function filter_table(elem) {
+    var outcome_att = "data-test-result";
+    var outcome = elem.getAttribute(outcome_att);
+    class_outcome = outcome + " results-table-row";
+    var outcome_rows = document.getElementsByClassName(class_outcome);
+
+    for(var i = 0; i < outcome_rows.length; i++){
+        outcome_rows[i].hidden = !elem.checked;
+    }
+
+    var rows = find_all('.results-table-row').filter(is_all_rows_hidden);
+    var all_rows_hidden = rows.length == 0 ? true : false;
+    var not_found_message = document.getElementById("not-found-message");
+    not_found_message.hidden = !all_rows_hidden;
+}
+</script>
+    <h1>nice.html</h1>
+    <p>Report generated on 26-Nov-2019 at 00:10:57 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v2.0.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>JAVA_HOME</td>
+        <td>C:\Program Files\Java\jdk1.8.0_31</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{&apos;pytest&apos;: &apos;5.3.0&apos;, &apos;py&apos;: &apos;1.8.0&apos;, &apos;pluggy&apos;: &apos;0.13.0&apos;}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.17134-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{&apos;allure-pytest&apos;: &apos;2.8.6&apos;, &apos;cov&apos;: &apos;2.8.1&apos;, &apos;html&apos;: &apos;2.0.1&apos;, &apos;metadata&apos;: &apos;1.8.0&apos;}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.7.0</td></tr></table>
+    <h2>Summary</h2>
+    <p>5 tests ran in 69.36 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="passed">5 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="failed">0 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable numeric" col="duration">Duration</th>
+          <th>Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/test_login.py::TestLogin::test_login_1_success</td>
+          <td class="col-duration">27.73</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session {&quot;desiredCapabilities&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;version&quot;: &quot;&quot;, &quot;platform&quot;: &quot;ANY&quot;, &quot;javascriptEnabled&quot;: true, &quot;chromeOptions&quot;: {&quot;extensions&quot;: [], &quot;args&quot;: []}}, &quot;requiredCapabilities&quot;: {}}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/window/current/maximize {&quot;windowHandle&quot;: &quot;current&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/url {&quot;url&quot;: &quot;http://120.78.128.25:8765/Index/login.html&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element/0.9484549455199285-1/displayed {&quot;id&quot;: &quot;0.9484549455199285-1&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素输入的值为18684720553
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element/0.9484549455199285-1/value {&quot;value&quot;: [&quot;1&quot;, &quot;8&quot;, &quot;6&quot;, &quot;8&quot;, &quot;4&quot;, &quot;7&quot;, &quot;2&quot;, &quot;0&quot;, &quot;5&quot;, &quot;5&quot;, &quot;3&quot;], &quot;id&quot;: &quot;0.9484549455199285-1&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element/0.9484549455199285-2/displayed {&quot;id&quot;: &quot;0.9484549455199285-2&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素输入的值为 python
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element/0.9484549455199285-2/value {&quot;value&quot;: [&quot; &quot;, &quot;p&quot;, &quot;y&quot;, &quot;t&quot;, &quot;h&quot;, &quot;o&quot;, &quot;n&quot;], &quot;id&quot;: &quot;0.9484549455199285-2&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element/0.9484549455199285-3/displayed {&quot;id&quot;: &quot;0.9484549455199285-3&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:59 登录页面_登录功能点击元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element/0.9484549455199285-3/click {&quot;id&quot;: &quot;0.9484549455199285-3&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//a[@href=\&quot;/Index/logout.html\&quot;]&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//a[@href=\&quot;/Index/logout.html\&quot;]&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5758/session/d7d90f77877acd0566210e531e882686/element/0.6654187333135893-1/displayed {&quot;id&quot;: &quot;0.6654187333135893-1&quot;, &quot;sessionId&quot;: &quot;d7d90f77877acd0566210e531e882686&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:122 页面中找到(&#x27;xpath&#x27;, &#x27;//a[@href=&quot;/Index/logout.html&quot;]&#x27;)元素<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/test_login_error.py::TestLoginError::test_login_0_user_wrongForamt[data0]</td>
+          <td class="col-duration">0.71</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session {&quot;desiredCapabilities&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;version&quot;: &quot;&quot;, &quot;platform&quot;: &quot;ANY&quot;, &quot;javascriptEnabled&quot;: true, &quot;chromeOptions&quot;: {&quot;extensions&quot;: [], &quot;args&quot;: []}}, &quot;requiredCapabilities&quot;: {}}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/window/current/maximize {&quot;windowHandle&quot;: &quot;current&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/url {&quot;url&quot;: &quot;http://120.78.128.25:8765/Index/login.html&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-1/displayed {&quot;id&quot;: &quot;0.16433617086609376-1&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素输入的值为186847205534
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-1/value {&quot;value&quot;: [&quot;1&quot;, &quot;8&quot;, &quot;6&quot;, &quot;8&quot;, &quot;4&quot;, &quot;7&quot;, &quot;2&quot;, &quot;0&quot;, &quot;5&quot;, &quot;5&quot;, &quot;3&quot;, &quot;4&quot;], &quot;id&quot;: &quot;0.16433617086609376-1&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-2/displayed {&quot;id&quot;: &quot;0.16433617086609376-2&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素输入的值为python
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-2/value {&quot;value&quot;: [&quot;p&quot;, &quot;y&quot;, &quot;t&quot;, &quot;h&quot;, &quot;o&quot;, &quot;n&quot;], &quot;id&quot;: &quot;0.16433617086609376-2&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-3/displayed {&quot;id&quot;: &quot;0.16433617086609376-3&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:59 登录页面_登录功能点击元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-3/click {&quot;id&quot;: &quot;0.16433617086609376-3&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//div[@class=\&quot;form-error-info\&quot;] &quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-4/displayed {&quot;id&quot;: &quot;0.16433617086609376-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//div[@class=\&quot;form-error-info\&quot;] &quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-4/text {&quot;id&quot;: &quot;0.16433617086609376-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+ERROR    root:basepage.py:84 登录页面_登录功能获取(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)元素的文本内容是请输入正确的手机号
+NoneType: None
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.16433617086609376-4/text {&quot;id&quot;: &quot;0.16433617086609376-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/test_login_error.py::TestLoginError::test_login_0_user_wrongForamt[data1]</td>
+          <td class="col-duration">0.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log call-------------------------------- <br/>INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-1/displayed {&quot;id&quot;: &quot;0.8405126094675628-1&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素输入的值为186847205
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-1/value {&quot;value&quot;: [&quot;1&quot;, &quot;8&quot;, &quot;6&quot;, &quot;8&quot;, &quot;4&quot;, &quot;7&quot;, &quot;2&quot;, &quot;0&quot;, &quot;5&quot;], &quot;id&quot;: &quot;0.8405126094675628-1&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-2/displayed {&quot;id&quot;: &quot;0.8405126094675628-2&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素输入的值为python
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-2/value {&quot;value&quot;: [&quot;p&quot;, &quot;y&quot;, &quot;t&quot;, &quot;h&quot;, &quot;o&quot;, &quot;n&quot;], &quot;id&quot;: &quot;0.8405126094675628-2&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-3/displayed {&quot;id&quot;: &quot;0.8405126094675628-3&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:59 登录页面_登录功能点击元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-3/click {&quot;id&quot;: &quot;0.8405126094675628-3&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//div[@class=\&quot;form-error-info\&quot;] &quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-4/displayed {&quot;id&quot;: &quot;0.8405126094675628-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//div[@class=\&quot;form-error-info\&quot;] &quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-4/text {&quot;id&quot;: &quot;0.8405126094675628-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+ERROR    root:basepage.py:84 登录页面_登录功能获取(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)元素的文本内容是请输入正确的手机号
+NoneType: None
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.8405126094675628-4/text {&quot;id&quot;: &quot;0.8405126094675628-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/test_login_error.py::TestLoginError::test_login_0_user_wrongForamt[data2]</td>
+          <td class="col-duration">0.61</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log call-------------------------------- <br/>INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-1/displayed {&quot;id&quot;: &quot;0.3644648994155071-1&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素输入的值为
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-1/value {&quot;value&quot;: [], &quot;id&quot;: &quot;0.3644648994155071-1&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-2/displayed {&quot;id&quot;: &quot;0.3644648994155071-2&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素输入的值为python
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-2/value {&quot;value&quot;: [&quot;p&quot;, &quot;y&quot;, &quot;t&quot;, &quot;h&quot;, &quot;o&quot;, &quot;n&quot;], &quot;id&quot;: &quot;0.3644648994155071-2&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-3/displayed {&quot;id&quot;: &quot;0.3644648994155071-3&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:59 登录页面_登录功能点击元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-3/click {&quot;id&quot;: &quot;0.3644648994155071-3&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//div[@class=\&quot;form-error-info\&quot;] &quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-4/displayed {&quot;id&quot;: &quot;0.3644648994155071-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//div[@class=\&quot;form-error-info\&quot;] &quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-4/text {&quot;id&quot;: &quot;0.3644648994155071-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+ERROR    root:basepage.py:84 登录页面_登录功能获取(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)元素的文本内容是请输入手机号
+NoneType: None
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.3644648994155071-4/text {&quot;id&quot;: &quot;0.3644648994155071-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/test_login_error.py::TestLoginError::test_login_0_user_wrongForamt[data3]</td>
+          <td class="col-duration">0.67</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log call-------------------------------- <br/>INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-1/displayed {&quot;id&quot;: &quot;0.33367006880897776-1&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;phone\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;phone&quot;]&#x27;)元素输入的值为1163563232
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-1/value {&quot;value&quot;: [&quot;1&quot;, &quot;1&quot;, &quot;6&quot;, &quot;3&quot;, &quot;5&quot;, &quot;6&quot;, &quot;3&quot;, &quot;2&quot;, &quot;3&quot;, &quot;2&quot;], &quot;id&quot;: &quot;0.33367006880897776-1&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-2/displayed {&quot;id&quot;: &quot;0.33367006880897776-2&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;// input[ @ name = \&quot;password\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;// input[ @ name = &quot;password&quot;]&#x27;)元素输入的值为python
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-2/value {&quot;value&quot;: [&quot;p&quot;, &quot;y&quot;, &quot;t&quot;, &quot;h&quot;, &quot;o&quot;, &quot;n&quot;], &quot;id&quot;: &quot;0.33367006880897776-2&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-3/displayed {&quot;id&quot;: &quot;0.33367006880897776-3&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//button[text()=\&quot;\u767b\u5f55\&quot;]&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:59 登录页面_登录功能点击元素(&#x27;xpath&#x27;, &#x27;//button[text()=&quot;登录&quot;]&#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-3/click {&quot;id&quot;: &quot;0.33367006880897776-3&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//div[@class=\&quot;form-error-info\&quot;] &quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-4/displayed {&quot;id&quot;: &quot;0.33367006880897776-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element {&quot;using&quot;: &quot;xpath&quot;, &quot;value&quot;: &quot;//div[@class=\&quot;form-error-info\&quot;] &quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-4/text {&quot;id&quot;: &quot;0.33367006880897776-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+ERROR    root:basepage.py:84 登录页面_登录功能获取(&#x27;xpath&#x27;, &#x27;//div[@class=&quot;form-error-info&quot;] &#x27;)元素的文本内容是请输入正确的手机号
+NoneType: None
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5840/session/2e15da231ced39ec47afe37a3f6d6ed1/element/0.33367006880897776-4/text {&quot;id&quot;: &quot;0.33367006880897776-4&quot;, &quot;sessionId&quot;: &quot;2e15da231ced39ec47afe37a3f6d6ed1&quot;}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request<br/></div></td></tr></tbody></table></body></html>

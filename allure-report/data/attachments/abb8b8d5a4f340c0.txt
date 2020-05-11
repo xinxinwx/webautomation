@@ -1,0 +1,172 @@
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session {"desiredCapabilities": {"browserName": "chrome", "version": "", "platform": "ANY", "javascriptEnabled": true, "chromeOptions": {"extensions": [], "args": []}}, "requiredCapabilities": {}}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/window/current/maximize {"windowHandle": "current", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/url {"url": "http://120.78.128.25:8765/Index/login.html", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素('xpath', '// input[ @ name = "phone"]')可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "// input[ @ name = \"phone\"]", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element/0.4684941577961448-1/displayed {"id": "0.4684941577961448-1", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能('xpath', '// input[ @ name = "phone"]')元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素('xpath', '// input[ @ name = "phone"]')
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "// input[ @ name = \"phone\"]", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能('xpath', '// input[ @ name = "phone"]')元素输入的值为15631440614
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element/0.4684941577961448-1/value {"value": ["1", "5", "6", "3", "1", "4", "4", "0", "6", "1", "4"], "id": "0.4684941577961448-1", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素('xpath', '// input[ @ name = "password"]')可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "// input[ @ name = \"password\"]", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element/0.4684941577961448-2/displayed {"id": "0.4684941577961448-2", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能('xpath', '// input[ @ name = "password"]')元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素('xpath', '// input[ @ name = "password"]')
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "// input[ @ name = \"password\"]", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:72 登录页面_登录功能('xpath', '// input[ @ name = "password"]')元素输入的值为123456
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element/0.4684941577961448-2/value {"value": ["1", "2", "3", "4", "5", "6"], "id": "0.4684941577961448-2", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素('xpath', '//button[text()="登录"]')可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//button[text()=\"\u767b\u5f55\"]", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element/0.4684941577961448-3/displayed {"id": "0.4684941577961448-3", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:34 登录页面_登录功能('xpath', '//button[text()="登录"]')元素已可见,等待时长为0
+INFO     root:basepage.py:47 登录页面_登录功能查找元素('xpath', '//button[text()="登录"]')
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//button[text()=\"\u767b\u5f55\"]", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:59 登录页面_登录功能点击元素('xpath', '//button[text()="登录"]')
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element/0.4684941577961448-3/click {"id": "0.4684941577961448-3", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+INFO     root:basepage.py:26 登录页面_登录功能等待元素('xpath', '//div[@class="form-error-info"] ')可见
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/element {"using": "xpath", "value": "//div[@class=\"form-error-info\"] ", "sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+ERROR    root:basepage.py:36 登录页面_登录功能等待('xpath', '//div[@class="form-error-info"] ')元素可见失败!!!!
+Traceback (most recent call last):
+  File "D:\webframework\Common\basepage.py", line 30, in wait_eleVisible
+    WebDriverWait(self.driver,times,poll_frequency).until(EC.visibility_of_element_located(locator))
+  File "D:\软件\lib\site-packages\selenium\webdriver\support\wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 GET http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/screenshot {"sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
+ERROR    root:screenshots.py:16 截图成功，路径为：../screenshots/登录页面_登录功能2019-11-26_00-03-21_.png
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:415 POST http://127.0.0.1:5284/session/1679a1911c7d9949ee9e6b020640e994/refresh {"sessionId": "1679a1911c7d9949ee9e6b020640e994"}
+DEBUG    selenium.webdriver.remote.remote_connection:remote_connection.py:510 Finished Request
